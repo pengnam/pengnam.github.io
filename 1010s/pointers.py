@@ -1,3 +1,14 @@
+"""
+Format for midterms(usually) and concepts tested
+
+    1. Tracing
+        - higher order functions(*), function scope
+    2. Iteration/Recursion
+        - Order Of Growth, writing iteration or recursion
+"""
+
+
+
 ##################
 #Order of Growth #
 ##################
@@ -53,11 +64,11 @@ for i in range(n):
 #Space: O(1)
 
 
-def help(x):
+def recursion(x):
     if x == 0:
         return x
     else:
-        return x + help(x-1)
+        return x + recursion(x-1)
 
 #Time: O(n)
 #Space: O(n)
@@ -68,6 +79,19 @@ while(i<n):
     i *= 2
 #Time: O(logn)
 #Space: O(1)
+
+"""
+Trees
+"""
+
+def tree(x):
+    if x == 0:
+        return x
+    else:
+        return tree(x-1) + tree(x-1)
+
+#Time: O(2^n)
+#Space: O(n)
 
 """
 Helpful sites (If you don't believe me):
