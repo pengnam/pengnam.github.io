@@ -13,7 +13,7 @@ Format for midterms(usually) and concepts tested
 #Order of Growth #
 ##################
 
-n = 100000000000000000000
+n = 100000000
 k = 40000
 """
 Lists
@@ -92,6 +92,27 @@ def tree(x):
 
 #Time: O(2^n)
 #Space: O(n)
+
+"""
+Tips
+
+1) Identify if its recursion/iteration
+2) Determine number of for loops, or number of levels of recursion.
+3) Determine if there is any nested complexity.
+i.e.
+for i in range(n):
+    #Some O(n) function, called at each iteration of the for loop.
+
+The complexity of the above algorithm is O(n^2)
+
+
+If all else fails,
+count the number of times certain pieces of code will run and see if it scales linearly, above linear or sublinear.
+
+
+"""
+
+
 
 """
 Helpful sites (If you don't believe me):
