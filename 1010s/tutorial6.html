@@ -1,0 +1,519 @@
+<html>
+  <head>
+    <!-- RevealJS dependencies -->
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/sky.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/lib/js/head.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
+
+    <!-- Allows the slides to be printed in a reasonable style -->
+    <script>
+      const link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi )
+        ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/print/pdf.min.css'
+        : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/print/paper.min.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <style>
+      .subtitle {
+        font-size: 0.75em !important;
+      }
+
+      .reveal pre {
+        box-shadow: none;
+        width: 75%;
+      }
+
+      body > div > div.slides > section {
+        text-align: left;
+      }
+
+      pre > code {
+        background: none !important;
+      }
+
+      p, ol > li, ul > li {
+        font-size: 0.75em !important;
+      }
+
+      p.red {
+        color: red;
+      }
+
+      p.center {
+        text-align: center;
+      }
+
+      p.smaller {
+        font-size: 0.5em !important;
+      }
+
+      section.center-items.present {
+        text-align: center;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <section>
+          <h3>CS1010S Tutorial 6</h3>
+          <hr>
+          <p class="subtitle">
+            Ng Peng Nam, Sean <br>
+            AY2018/19 Sem 2, Week 9
+          </p>
+          <p class="subtitle">
+            Materials:
+              <a href="http://pengnam.github.io/cs1010s">pengnam.github.io/cs1010s</a>
+              <br>
+            Contact:
+              <a href="mailto:seanngpengnam@u.nus.edu">seanngpengnam@u.nus.edu</a>
+          </p>
+        </section>
+
+        <!-- Question 1 -->
+        <section>
+
+          <section>
+            <ol>
+              <li>Take a list of integers and an integer <i>n</i></li>
+              <li>Return the <b>original</b> list with all the integers
+                smaller than <i>n</i> removed.</li>
+            </ol>
+
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):
+          if lst[i] &lt; n:
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+
+            <p class="align-left">What is wrong with this function?</p>
+          </section>
+
+          <section>
+            <pre><code class="python">
+&gt;&gt;&gt; def at_least_n(lst, n):
+...     for i in range(len(lst)):
+...         if lst[i] &lt; n:
+...             lst.remove(lst[i])
+...     return lst
+...
+&gt;&gt;&gt; at_least_n([5, 4, 3, 2, 1], 5)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in at_least_n
+IndexError: list index out of range
+            </code></pre>
+
+            <p><i>Why?</i>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 0
+lst: [5, 4, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+                                       # &lt;&lt;&lt;&lt;&lt;
+          if lst[i] &lt; n:
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 0
+lst: [5, 4, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:               # &lt;&lt;&lt;&lt;&lt;
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 1
+lst: [5, 4, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+                                       # &lt;&lt;&lt;&lt;&lt;
+          if lst[i] &lt; n:
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 1
+lst: [5, 4, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:               # &lt;&lt;&lt;&lt;&lt;
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 1
+lst: [5, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:
+              lst.remove(lst[i])       # &lt;&lt;&lt;&lt;&lt;
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 2
+lst: [5, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+                                       # &lt;&lt;&lt;&lt;&lt;
+          if lst[i] &lt; n:
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 2
+lst: [5, 3, 2, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:               # &lt;&lt;&lt;&lt;&lt;
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 2
+lst: [5, 3, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:
+              lst.remove(lst[i])       # &lt;&lt;&lt;&lt;&lt;
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 3
+lst: [5, 3, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+                                       # &lt;&lt;&lt;&lt;&lt;
+          if lst[i] &lt; n:
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+          </section>
+
+          <section data-transition="none">
+            <pre><code class="python">
+  n: 5
+  i: 3
+lst: [5, 3, 1]
+            </code></pre>
+            <pre><code class="python">
+  def at_least_n(lst, n):
+      for i in range(len(lst)):  # for i in range(5)
+
+          if lst[i] &lt; n:               # &lt;&lt;&lt;&lt;&lt;
+              lst.remove(lst[i])
+      return lst
+            </code></pre>
+
+          </section>
+
+          <section>
+            <p class="red center">But there is no index 3 in <i>lst</i>!</p>
+          </section>
+
+        </section>
+
+        <!-- Question 2 -->
+        <section>
+          <section>
+          <ol>
+            <li>Take a list of integers and an integer <i>n</i></li>
+            <li>Return the <b>original</b> list with all the integers
+              smaller than <i>n</i> removed.</li>
+          </ol>
+
+          <pre><code class="python">
+def at_least_n(lst,n):
+    for i in lst:
+        if i &lt; n:
+            lst.remove(i)
+    return lst
+          </code></pre>
+
+          <p class="align-left">What is wrong with this function?</p>
+          </section>
+
+          <section>
+            <ul>
+              <li>Internally, <i>for i in lst</i> also keeps track of the
+                index</li>
+              <li>This is done implictly/automatically</li>
+              <li>Except no <i>IndexError</i> is thrown</li>
+              <li>But you still have the effect of 'skipping' elements</li>
+            </ul>
+          </section>
+
+          <section>
+            <p class="red center">
+              Don't modify your lists while you iterate over them!
+            </p>
+          </section>
+        </section>
+
+        <!-- Question 3 -->
+        <section>
+          <section>
+            <ol>
+              <li>Take a list of integers and an integer <i>n</i></li>
+              <li>Return the <b>original</b> list with all the integers
+                smaller than <i>n</i> removed.</li>
+            </ol>
+
+            <p class="align-left">Implement the algorithm!</p>
+          </section>
+
+          <section>
+            <p class="center">Solution? Use a copy of the list as reference.</p>
+          </section>
+        </section>
+
+        <!-- Question 4 -->
+        <section>
+          <ol>
+            <li>Take a list of integers and an integer <i>n</i></li>
+            <li>Return the <b>new</b> list with all the integers
+              smaller than <i>n</i> removed.</li>
+          </ol>
+
+          <p class="align-left">Implement the algorithm!</p>
+        </section>
+
+        <!-- Question 5 -->
+        <section>
+          <ol>
+            <li>A 2D matrix can be represented as a nested list</li>
+            <li>Define a function <i>col_sum</i> that takes a matrix</li>
+            <li>Return the sum of the <i>i</i>-th column</li>
+            <li>Use nested <i>for</i> loops</li>
+          </ol>
+
+          <p class="align-left">Implement the algorithm!</p>
+        </section>
+
+        <!-- Question 6 -->
+        <section>
+          <ol>
+            <li>A 2D matrix can be represented as a nested list</li>
+            <li>Define a function <i>row_sum</i> that takes a matrix</li>
+            <li>Return a list with the sum of each row, in order</li>
+          </ol>
+
+          <p class="align-left">Implement the algorithm!</p>
+        </section>
+
+        <!-- Question 7 -->
+        <section>
+          <ol>
+            <li>A 2D matrix can be represented as a nested list</li>
+            <li>Define a function <i>transpose</i> that takes a matrix</li>
+            <li>Return the matrix transposed</li>
+          </ol>
+
+          <p class="align-left">Implement the algorithm!</p>
+        </section>
+
+        <!-- Question 8 -->
+        <section>
+          <section>
+            <p>
+              Describe, the following sorting algorithims used to sort the list
+              <br>
+              <i>[5, 7, 4, 9, 8, 5, 6, 3]</i>.
+            </p>
+
+            <ul>
+              <li>Insertion Sort</li>
+              <li>Selection Sort</li>
+              <li>Bubble Sort</li>
+              <li>Merge Sort</li>
+            </ul>
+
+          </section>
+
+          <section class="center-items" data-transition="none">
+            <img src="tutorial6-insertion.gif">
+            <p>Insertion Sort</p>
+            <p class="smaller">The ordering happens at the <i>insertion</i></p>
+          </section>
+
+          <section class="center-items" data-transition="none">
+            <img src="tutorial6-selection.gif">
+            <p>Selection Sort</p>
+            <p class="smaller">The ordering happens at the <i>selection</i></p>
+          </section>
+
+          <section class="center-items" data-transition="none">
+            <img src="tutorial6-bubble.gif">
+            <p>Bubble Sort</p>
+            <p class="smaller">The ordering happens in <i>'bubbles'</i></p>
+          </section>
+
+          <section class="center-items" data-transition="none">
+            <img src="tutorial6-merge.gif">
+            <p>Merge Sort</p>
+            <p class="smaller">The ordering happens during the <i>merge</i></p>
+          </section>
+
+          <section>
+            <ol>
+              <li>Insertion sort animation: <a href="https://commons.wikimedia.org/wiki/File:Insertion-sort-example-300px.gif">
+                  Swfung8 on Wikipedia</a></li>
+              <li>Selection sort animation: <a href="https://commons.wikimedia.org/wiki/File:Selection-Sort-Animation.gif">
+                  Joestape89 on Wikipedia</a></li>
+              <li>Bubble sort animation: <a href="https://en.wikipedia.org/wiki/File:Bubble-sort-example-300px.gif">
+                  Swfung8 on Wikipedia</a></li>
+              <li>Merge sort animation: <a href="https://commons.wikimedia.org/wiki/File:Merge-sort-example-300px.gif">
+                  Swfung8 on Wikipedia</a></li>
+            </ol>
+          </section>
+
+        </section>
+
+        <!-- Question 9 -->
+        <section>
+          <section>
+            <ol>
+              <li>A student has ADT <i>tuple(name, grade, score)</i></li>
+              <li>Define a function <i>mode_score</i> that takes a list of
+                students</li>
+              <li>Return the mode <i>score</i></li>
+            </ol>
+
+            <p class="align-left">Implement the algorithm!</p>
+          </section>
+
+          <section>
+            <p>Always break the problem down into smaller steps. How would you
+            do it irl?</p>
+
+            <ol>
+              <li> Count the number of times each score appears</li>
+              <li> <i>Sort</i> the scores by the number of times they
+                appear</li>
+              <li> Pick the top appearing score</li>
+              <li> If there is a tie, pick all of the tied scores</li>
+            </ol>
+          </section>
+        </section>
+
+        <!-- Question 10 -->
+        <section>
+          <section>
+            <ol>
+              <li>A student has ADT <i>tuple(name, grade, score)</i></li>
+              <li>Define a function <i>top_k</i> that takes a list of
+                students and an integer <i>k</i></li>
+              <li>Return a list of the top <i>k</i> students</li>
+              <li>Include ties</li>
+            </ol>
+
+            <p class="align-left">Implement the algorithm!</p>
+          </section>
+
+          <section>
+            <p>Breaking it down:</p>
+
+            <ol>
+              <li>Sort the students by score</li>
+              <li>Pick the first <i>k</i>-th elements of the sorted list</li>
+              <li>Check the <i>k+1</i>th, if there is a tie, add that in as
+                well</li>
+              <li>Repeat (3) until no ties</li>
+            </ol>
+          </section>
+        </section>
+
+      </div>
+    </div>
+
+    <script>
+      const MARKED_CDN =
+        'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/marked.js'
+      const MARKDOWN_CDN =
+        'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/plugin/markdown/markdown.min.js'
+
+      Reveal.initialize({
+        dependencies: [
+          { src: MARKED_CDN, condition: () => document.querySelector('[data-markdown]') },
+          { src: MARKDOWN_CDN, condition: () => document.querySelector('[data-markdown]') }
+        ],
+        history: true
+      });
+    </script>
+  </body>
+</html>
